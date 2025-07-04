@@ -9,6 +9,7 @@ The goal of this project is to train a neural network that can calculate the sim
 ## Methodology
 
 This implementation uses a **Siamese neural network** architecture that learns to embed images into a feature space where:
+
 - Similar images (same class) are close together
 - Dissimilar images (different classes) are far apart
 
@@ -17,14 +18,16 @@ The network is trained using pairs of images with binary labels indicating wheth
 ## Architecture Overview
 
 ### 1. Embedding Network
+
 - **Input**: 28×28×1 MNIST images
-- **Architecture**: 
+- **Architecture**:
   - Two convolutional blocks (Conv2d → BatchNorm → ReLU → MaxPool)
   - Fully connected layers with BatchNorm and ReLU
   - L2 normalization for unit-length embeddings
 - **Output**: 128-dimensional normalized embedding vectors
 
 ### 2. Similarity Model
+
 - Takes two images as input
 - Computes embeddings using the shared embedding network
 - Calculates cosine similarity between embeddings
@@ -33,10 +36,12 @@ The network is trained using pairs of images with binary labels indicating wheth
 ## Implementation Details
 
 ### Data Preparation
+
 - **Transform**: Converts images to tensors with normalization (mean=0.1307, std=0.3081)
 - **Pair Generation**: Custom `PairDataset` class creates pairs with 50% positive (same class) and 50% negative (different class) samples
 
 ### Training Configuration
+
 - **Optimizer**: Adam (lr=1e-2, weight_decay=1e-5)
 - **Loss Function**: Binary Cross-Entropy with Logits
 - **Scheduler**: ReduceLROnPlateau (patience=2, factor=0.5)
@@ -67,22 +72,25 @@ The implementation is organized into several key components:
 ## Installation and Usage
 
 1. **Clone the repository**:
+
    ```bash
-   git clone <repository-url>
-   cd image-similarity-network
+   git clone https://github.com/HasanAbdelhady/Calculating-Image-Similarity-using-Neural-Networks.git
    ```
 
 2. **Install dependencies**:
+
    ```bash
    pip install torch torchvision matplotlib numpy pandas jupyter
    ```
 
 3. **Run the Jupyter notebook**:
+
    ```bash
    jupyter notebook
    ```
-   
+
    Then open the main notebook file and run all cells sequentially. The notebook includes:
+
    - Data loading and preprocessing
    - Model architecture definitions
    - Training loop with progress monitoring
@@ -99,6 +107,7 @@ The implementation is organized into several key components:
 ## Model Architecture Details
 
 ### Embedding Network Flow
+
 ```
 Input (28×28×1) → Conv2d(1→32) → BatchNorm → ReLU → MaxPool(2×2) →
 Conv2d(32→64) → BatchNorm → ReLU → MaxPool(2×2) →
@@ -106,6 +115,7 @@ Flatten → Linear(3136→128) → BatchNorm → ReLU → L2_Normalize → Outpu
 ```
 
 ### Training Process
+
 1. **Pair Generation**: Creates balanced pairs of similar/dissimilar images
 2. **Forward Pass**: Computes embeddings for both images in a pair
 3. **Similarity Calculation**: Uses cosine similarity between normalized embeddings
@@ -115,6 +125,7 @@ Flatten → Linear(3136→128) → BatchNorm → ReLU → L2_Normalize → Outpu
 ## Results
 
 The trained model achieves:
+
 - High accuracy in distinguishing between similar and dissimilar image pairs
 - Meaningful similarity scores (higher for same-class pairs, lower for different-class pairs)
 - Robust performance across different MNIST digit classes
@@ -122,28 +133,29 @@ The trained model achieves:
 ### Dataset Visualization
 
 ![Pairs Dataset](pairs2.png)
-*Figure 1: Visualization of the PairDataset showing how similar and dissimilar image pairs are constructed from MNIST digits.*
+_Figure 1: Visualization of the PairDataset showing how similar and dissimilar image pairs are constructed from MNIST digits._
 
 ![Dataset Structure](df.png)
-*Figure 2: Structure of the paired dataset showing labels where 1 indicates similar pairs (same class) and 0 indicates dissimilar pairs (different classes).*
+_Figure 2: Structure of the paired dataset showing labels where 1 indicates similar pairs (same class) and 0 indicates dissimilar pairs (different classes)._
 
 ### Architecture Visualization
 
 ![3D Architecture](blocks2.png)
-*Figure 3: 3D visualization of the EmbeddingNet architecture showing the convolutional blocks and fully connected layers.*
+_Figure 3: 3D visualization of the EmbeddingNet architecture showing the convolutional blocks and fully connected layers._
 
 ![Cosine Similarity Model](cosine.png)
-*Figure 4: Visual representation of the Similarity Model showing how cosine similarity is computed between image embeddings.*
+_Figure 4: Visual representation of the Similarity Model showing how cosine similarity is computed between image embeddings._
 
 ### Model Results
 
 ![Similarity Output](sim_out.png)
-*Figure 5: Example pairs of images with their predicted similarity scores from the trained model.*
+_Figure 5: Example pairs of images with their predicted similarity scores from the trained model._
 
 ![Similarity Comparison](sim_comp2.png)
-*Figure 6: Additional examples showing comprehensive similarity comparisons between a test image and various digit classes.*
+_Figure 6: Additional examples showing comprehensive similarity comparisons between a test image and various digit classes._
 
 ### Visualization Features
+
 - **Similarity Matrix**: Shows how a test image compares to all digit classes
 - **Color Coding**: Green for high similarity, red for low similarity
 - **Ranked Results**: Displays digits ranked by similarity score
@@ -181,4 +193,4 @@ This project is available for educational and research purposes.
 
 ## Contributing
 
-Feel free to submit issues, feature requests, and pull requests to improve the implementation. 
+Feel free to submit issues, feature requests, and pull requests to improve the implementation.
